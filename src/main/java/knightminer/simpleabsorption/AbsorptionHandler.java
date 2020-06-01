@@ -1,5 +1,6 @@
 package knightminer.simpleabsorption;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -38,6 +39,7 @@ public class AbsorptionHandler {
     // armor
     int goldBoost = Config.GOLD_ABSORPTION.get();
     for (ItemStack stack : player.getArmorInventoryList()) {
+      max += EnchantmentHelper.getEnchantmentLevel(SimpleAbsorption.ABSORPTION, stack);
       // increase by amount for a gold piece
       if (goldBoost > 0) {
         Item item = stack.getItem();

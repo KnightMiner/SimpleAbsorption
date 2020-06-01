@@ -19,6 +19,9 @@ public class Config {
     GOLD_ABSORPTION = builder
         .comment("Amount of half hearts of absorption granted per piece of gold armor worn.")
         .defineInRange("gold_absorption", 1, 0, 4);
+    MAX_ENCHANT = builder
+        .comment("Maximum level for the enchantment per piece. Each level gives half a heart. If 0, enchantment will be disabled.")
+        .defineInRange("max_enchantment_level", 4, 0, 6);
 
     SPEC = builder.build();
   }
@@ -27,4 +30,5 @@ public class Config {
   public static final IntValue BASE_ABSORPTION;
   public static final BooleanValue INCLUDE_POTION;
   public static final IntValue GOLD_ABSORPTION;
+  public static final IntValue MAX_ENCHANT;
 }
