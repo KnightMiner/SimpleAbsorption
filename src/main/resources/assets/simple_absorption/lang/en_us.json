@@ -1,3 +1,4 @@
 {
-  "enchantment.simple_absorption.absorption": "Absorption"
+  "enchantment.simple_absorption.absorption": "Absorption",
+  "tooltip.simple_absorption.golden_armor": "+%s Absorption"
 }
