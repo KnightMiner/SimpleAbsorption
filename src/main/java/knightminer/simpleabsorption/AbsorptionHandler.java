@@ -2,6 +2,8 @@ package knightminer.simpleabsorption;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.event.TickEvent.Phase;
@@ -19,7 +21,17 @@ public class AbsorptionHandler {
    * @return
    */
   private static int getMaxAbsorption(PlayerEntity player) {
-    return Config.BASE_ABSORPTION.get();
+    int max = Config.BASE_ABSORPTION.get();
+
+    // potions
+    if (Config.INCLUDE_POTION.get()) {
+      EffectInstance effect = player.getActivePotionEffect(Effects.ABSORPTION);
+      if (effect != null) {
+        max += (effect.getAmplifier() + 1) * 4;
+      }
+    }
+
+    return max;
   }
 
   /** Runs on player update to update absorption shield, internal event */
