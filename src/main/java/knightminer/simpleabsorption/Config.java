@@ -16,6 +16,9 @@ public class Config {
     INCLUDE_POTION = builder
         .comment("If true, hearts from the potion effect will be included in absorption calculations")
         .define("include_potion", false);
+    GOLD_ABSORPTION = builder
+        .comment("Amount of half hearts of absorption granted per piece of gold armor worn.")
+        .defineInRange("gold_absorption", 1, 0, 4);
 
     SPEC = builder.build();
   }
@@ -23,4 +26,5 @@ public class Config {
   // properties
   public static final IntValue BASE_ABSORPTION;
   public static final BooleanValue INCLUDE_POTION;
+  public static final IntValue GOLD_ABSORPTION;
 }

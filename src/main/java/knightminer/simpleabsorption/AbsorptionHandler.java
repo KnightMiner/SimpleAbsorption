@@ -1,6 +1,10 @@
 package knightminer.simpleabsorption;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ArmorMaterial;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -28,6 +32,18 @@ public class AbsorptionHandler {
       EffectInstance effect = player.getActivePotionEffect(Effects.ABSORPTION);
       if (effect != null) {
         max += (effect.getAmplifier() + 1) * 4;
+      }
+    }
+
+    // armor
+    int goldBoost = Config.GOLD_ABSORPTION.get();
+    for (ItemStack stack : player.getArmorInventoryList()) {
+      // increase by amount for a gold piece
+      if (goldBoost > 0) {
+        Item item = stack.getItem();
+        if (item instanceof ArmorItem && ((ArmorItem)item).getArmorMaterial() == ArmorMaterial.GOLD) {
+          max += goldBoost;
+        }
       }
     }
 
