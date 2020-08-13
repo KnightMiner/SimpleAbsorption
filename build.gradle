@@ -112,6 +112,20 @@ dependencies {
   //compile fg.deobf("slimeknights:TConstruct:${config.minecraft_version}-${config.tinkers_version}")
 }
 
+// replace properties in mods.toml with properties from config
+processResources {
+  inputs.property "version", config.mod_version
+  inputs.property "minecraft_version", config.minecraft_version
+
+  from(sourceSets.main.resources.srcDirs) {
+    include 'META-INF/mods.toml'
+    expand 'version': config.mod_version, 'minecraft_version': config.minecraft_version, 'forge_version': config.forge_version_min
+  }
+
+  from(sourceSets.main.resources.srcDirs) {
+    exclude 'META-INF/mods.toml'
+  }
+}
 
 jar {
   manifest {
@@ -126,6 +140,8 @@ jar {
     ])
   }
 }
+
+jar.finalizedBy('reobfJar')
 
 // because the normal output has been made to be obfuscated
 task sourcesJar(type: Jar) {

@@ -58,7 +58,7 @@ public class SimpleAbsorption {
 		}
 		// add tooltip if relevant
 		if (absorption > 0) {
-			event.getToolTip().add(new TranslationTextComponent("tooltip.simple_absorption.absorption", absorption).applyTextStyle(TextFormatting.BLUE));
+			event.getToolTip().add(new TranslationTextComponent("tooltip.simple_absorption.absorption", absorption).mergeStyle(TextFormatting.BLUE));
 		}
 	}
 }
