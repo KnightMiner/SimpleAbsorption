@@ -11,6 +11,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.FoodStats;
 import net.minecraft.world.GameRules;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -70,9 +71,9 @@ public class AbsorptionHandler {
     // determine max ABSORPTION amount
     float absorption = player.getAbsorptionAmount();
     int max;
-    if (nbt.contains(TAG_MAX, 99)) {
+    if (nbt.contains(TAG_MAX, NBT.TAG_ANY_NUMERIC)) {
       max = nbt.getInt(TAG_MAX);
-      // every 2.5 seconds, update their max amount
+      // every 5 seconds, update their max amount
       if (player.ticksExisted % 100 == 0) {
         int newMax = getMaxAbsorption(player);
         nbt.putInt(TAG_MAX, newMax);
