@@ -20,6 +20,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
 
+@SuppressWarnings("WeakerAccess")
 @Mod(SimpleAbsorption.MOD_ID)
 public class SimpleAbsorption {
 	// IDs
@@ -45,6 +46,7 @@ public class SimpleAbsorption {
 		event.getRegistry().register(absorption);
 	}
 
+	/** Adds the absorption tooltip to armor */
 	private static void itemTooltip(ItemTooltipEvent event) {
 		// tooltips only matter for gold armor or the enchant
 		int goldBoost = Config.GOLD_ABSORPTION.get();

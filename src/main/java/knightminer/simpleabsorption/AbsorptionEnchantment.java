@@ -6,8 +6,12 @@ import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Enchantment granting bonus absorption hearts
+ */
+@SuppressWarnings("WeakerAccess")
 public class AbsorptionEnchantment extends Enchantment {
-  protected AbsorptionEnchantment(Rarity rarity, EquipmentSlotType... slots) {
+  public AbsorptionEnchantment(Rarity rarity, EquipmentSlotType... slots) {
     super(rarity, EnchantmentType.ARMOR, slots);
   }
 

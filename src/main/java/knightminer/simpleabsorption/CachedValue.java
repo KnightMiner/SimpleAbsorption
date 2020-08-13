@@ -6,8 +6,9 @@ import java.util.function.Supplier;
 
 /**
  * Cached version of a config value, since the get method is a bit expensive
- * @param <T>
+ * @param <T>  Config value type
  */
+@SuppressWarnings("WeakerAccess")
 public class CachedValue<T> implements Supplier<T> {
   private boolean resolved = false;
   private T cached;

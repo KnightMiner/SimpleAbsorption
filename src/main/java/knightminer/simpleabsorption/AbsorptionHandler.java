@@ -15,6 +15,10 @@ import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.fml.LogicalSide;
 
+/**
+ * Actual logic that grants players absorption.
+ */
+@SuppressWarnings("WeakerAccess")
 public class AbsorptionHandler {
   // NBT
   private static final String TAG_TIMER = "simple_absorption_timer";
@@ -22,8 +26,8 @@ public class AbsorptionHandler {
 
   /**
    * Gets the ABSORPTION maximum for a player
-   * @param player
-   * @return
+   * @param player  Player to check absorption level
+   * @return  Number of absorption hearts allowed
    */
   private static int getMaxAbsorption(PlayerEntity player) {
     int max = Config.BASE_ABSORPTION.get();
