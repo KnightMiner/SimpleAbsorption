@@ -13,6 +13,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -30,7 +31,9 @@ public class SimpleAbsorption {
 
 	public SimpleAbsorption() {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
-		FMLJavaModLoadingContext.get().getModEventBus().addGenericListener(Enchantment.class, SimpleAbsorption::registerEnchants);
+		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+		modBus.addGenericListener(Enchantment.class, SimpleAbsorption::registerEnchants);
+		modBus.addListener(Config::configChanged);
 		MinecraftForge.EVENT_BUS.addListener(AbsorptionHandler::playerTick);
 		MinecraftForge.EVENT_BUS.addListener(SimpleAbsorption::itemTooltip);
 	}
