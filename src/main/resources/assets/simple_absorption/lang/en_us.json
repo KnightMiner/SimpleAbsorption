@@ -1,4 +1,5 @@
 {
   "enchantment.simple_absorption.absorption": "Absorption",
-  "tooltip.simple_absorption.absorption": "+%s Absorption"
+  "simple_absorption.absorption_max": "Max Absorption",
+  "simple_absorption.absorption_efficiency": "Absorption Efficiency"
 }

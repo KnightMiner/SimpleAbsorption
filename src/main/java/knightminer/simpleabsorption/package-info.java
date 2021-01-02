@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package knightminer.inspirations.common.config;
+package knightminer.simpleabsorption;
 
 import mcp.MethodsReturnNonnullByDefault;
 
