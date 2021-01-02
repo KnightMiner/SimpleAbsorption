@@ -31,6 +31,15 @@ public class AbsorptionEnchantment extends Enchantment {
   }
 
   @Override
+  public boolean canApply(ItemStack stack) {
+    // apply to shields on anvils if enabled
+    if (Config.ENCHANT_SHIELDS.get() && stack.isShield(null)) {
+      return true;
+    }
+    return super.canApply(stack);
+  }
+
+  @Override
   public boolean isAllowedOnBooks() {
     return Config.MAX_ENCHANT.get() > 0;
   }

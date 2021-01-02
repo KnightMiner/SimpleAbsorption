@@ -46,6 +46,7 @@ public class Config {
   public static final CachedValue<Integer> GOLD_ABSORPTION;
   public static final CachedValue<Double> CHAIN_EFFICIENCY;
   public static final CachedValue<Integer> MAX_ENCHANT;
+  public static final CachedValue<Boolean> ENCHANT_SHIELDS;
   public static final CachedValue<Boolean> REPLACE_ARMOR;
 
   /**
