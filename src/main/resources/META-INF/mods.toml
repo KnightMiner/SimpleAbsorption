@@ -1,6 +1,7 @@
 modLoader="javafml"
-loaderVersion="[27,)"
+loaderVersion="[33,)"
 issueTrackerURL="https://github.com/KnightMiner/SimpleAbsorption/issues/"
+license="MIT"
 [[mods]]
 modId="simple_absorption"
 version="${version}"
@@ -15,12 +16,12 @@ Mod adding a simple absorption shield for the player, restored when the hunger b
 [[dependencies.simple_absorption]] 
     modId="forge"
     mandatory=true
-    versionRange="[${forge_version},)" #mandatory
+    versionRange="${forge_range}" #mandatory
     ordering="AFTER"
     side="BOTH"
 [[dependencies.simple_absorption]]
     modId="minecraft"
     mandatory=true
-    versionRange="[${minecraft_version},]"
+    versionRange="${minecraft_range}"
     ordering="NONE"
     side="BOTH"

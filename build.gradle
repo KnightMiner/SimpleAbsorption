@@ -119,7 +119,7 @@ processResources {
 
   from(sourceSets.main.resources.srcDirs) {
     include 'META-INF/mods.toml'
-    expand 'version': config.mod_version, 'minecraft_version': config.minecraft_version, 'forge_version': config.forge_version_min
+    expand 'version': config.mod_version, 'minecraft_range': config.minecraft_range, 'forge_range': config.forge_range
   }
 
   from(sourceSets.main.resources.srcDirs) {
