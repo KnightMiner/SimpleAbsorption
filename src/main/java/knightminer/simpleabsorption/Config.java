@@ -26,7 +26,7 @@ public class Config {
         .defineInRange("gold_absorption", 1, 0, 4));
     CHAIN_EFFICIENCY = cached(builder
         .comment("Absorption efficiency boost per chain armor piece. Absorption efficiency decreases hunger consumption and hunger requirements to heal.")
-        .defineInRange("gold_absorption", 1.0, 0.0, 4.0));
+        .defineInRange("chain_efficiency", 1.0, 0.0, 4.0));
     MAX_ENCHANT = cached(builder
         .comment("Maximum level for the enchantment per piece. Each level gives half a heart. If 0, enchantment will be disabled.")
         .defineInRange("max_enchantment_level", 4, 0, 6));
