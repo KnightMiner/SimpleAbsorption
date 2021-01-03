@@ -81,9 +81,9 @@ public class AbsorptionHandler {
 
     // determine the max from the attribute
     ModifiableAttributeInstance maxAttribute = player.getAttribute(SimpleAbsorption.ABSORPTION_MAX);
-    float max = 0;
+    float max = Config.BASE_ABSORPTION.get();
     if (maxAttribute != null) {
-      max = (int) maxAttribute.getValue();
+      max += maxAttribute.getValue();
     }
 
     // every five seconds, ensure we are not over the max
