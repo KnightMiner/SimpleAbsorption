@@ -141,9 +141,10 @@ public class AbsorptionHandler {
         timer = 0;
       }
       // 18 to 20: regular heal, efficiency makes it a lesser requirement
-    } else if(foodLevel >= (18 - efficiency)) {
+    } else if(foodLevel >= Math.max(1, (18 - efficiency))) {
       timer = nbt.getByte(TAG_TIMER) + 1;
-      if(timer >= 80) {
+      // efficiency makes it a bit faster too
+      if(timer >= (80 - (2 * efficiency))) {
         player.addExhaustion(exhaustionRate);
         heal = 1.0f;
         timer = 0;

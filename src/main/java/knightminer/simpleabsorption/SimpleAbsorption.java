@@ -57,9 +57,9 @@ public class SimpleAbsorption {
 
 	/** Registers mod applicable attributes */
 	private static void registerAttributes(Register<Attribute> event) {
-		Attribute absorptionMax = new RangedAttribute("simple_absorption.absorption_max", 0, 0, 100D).setShouldWatch(true).setRegistryName(ATTRIBUTE_MAX_ID);
+		Attribute absorptionMax = new RangedAttribute("simple_absorption.absorption_max", 0, 0, 100).setShouldWatch(true).setRegistryName(ATTRIBUTE_MAX_ID);
 		event.getRegistry().register(absorptionMax);
-		Attribute absorptionEfficiency = new RangedAttribute("simple_absorption.absorption_efficiency", 0, 0, 100D).setShouldWatch(true).setRegistryName(ATTRIBUTE_EFFICIENCY_ID);
+		Attribute absorptionEfficiency = new RangedAttribute("simple_absorption.absorption_efficiency", 0, 0, 20).setShouldWatch(true).setRegistryName(ATTRIBUTE_EFFICIENCY_ID);
 		event.getRegistry().register(absorptionEfficiency);
 
 		addAttributes(EntityType.PLAYER, builder -> {
