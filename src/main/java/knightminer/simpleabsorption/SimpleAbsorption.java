@@ -3,23 +3,18 @@ package knightminer.simpleabsorption;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantment.Rarity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap.MutableAttribute;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
-
-import java.util.function.Consumer;
 
 @SuppressWarnings("WeakerAccess")
 @Mod(SimpleAbsorption.MOD_ID)
@@ -45,6 +40,7 @@ public class SimpleAbsorption {
 		modBus.addGenericListener(Enchantment.class, SimpleAbsorption::registerEnchants);
 		modBus.addGenericListener(Attribute.class, SimpleAbsorption::registerAttributes);
 		modBus.addListener(Config::configChanged);
+		modBus.addListener(SimpleAbsorption::setupAttributes);
 		MinecraftForge.EVENT_BUS.register(AbsorptionHandler.class);
 	}
 
@@ -61,26 +57,13 @@ public class SimpleAbsorption {
 		event.getRegistry().register(absorptionMax);
 		Attribute absorptionEfficiency = new RangedAttribute("simple_absorption.absorption_efficiency", 0, 0, 20).setShouldWatch(true).setRegistryName(ATTRIBUTE_EFFICIENCY_ID);
 		event.getRegistry().register(absorptionEfficiency);
-
-		addAttributes(EntityType.PLAYER, builder -> {
-			builder.createMutableAttribute(absorptionMax);
-			builder.createMutableAttribute(absorptionEfficiency);
-
-		});
 	}
 
-	/**
-	 * Adds attributes to an entity type
-	 * @param type     Entity type
-	 * @param builder  Consumer for builder to add attributes
-	 */
-	@SuppressWarnings("SameParameterValue")
-	private static void addAttributes(EntityType<? extends LivingEntity> type, Consumer<MutableAttribute> builder) {
-		AttributeModifierMap.MutableAttribute newAttrs = AttributeModifierMap.createMutableAttribute();
-		if (GlobalEntityTypeAttributes.doesEntityHaveAttributes(type)) {
-			newAttrs.attributeMap.putAll(GlobalEntityTypeAttributes.getAttributesForEntity(type).attributeMap);
+	/** Adds attributes to the player */
+	private static void setupAttributes(EntityAttributeModificationEvent event) {
+		if (event.getTypes().contains(EntityType.PLAYER)) {
+			event.add(EntityType.PLAYER, ABSORPTION_MAX);
+			event.add(EntityType.PLAYER, ABSORPTION_EFFICIENCY);
 		}
-		builder.accept(newAttrs);
-		GlobalEntityTypeAttributes.put(type, newAttrs.create());
 	}
 }
