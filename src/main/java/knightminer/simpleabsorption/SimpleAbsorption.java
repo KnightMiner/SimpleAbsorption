@@ -13,6 +13,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -41,7 +42,13 @@ public class SimpleAbsorption {
 		modBus.addGenericListener(Attribute.class, SimpleAbsorption::registerAttributes);
 		modBus.addListener(Config::configChanged);
 		modBus.addListener(SimpleAbsorption::setupAttributes);
-		MinecraftForge.EVENT_BUS.register(AbsorptionHandler.class);
+		modBus.addListener(SimpleAbsorption::commonSetup);
+	}
+
+	/** General setup */
+	private static void commonSetup(FMLCommonSetupEvent event) {
+		AbsorptionCapability.init();
+		MinecraftForge.EVENT_BUS.register(AbsorptionSources.class);
 	}
 
 	/** Registers mod applicable enchants */
