@@ -3,14 +3,20 @@ buildscript {
     maven { url = 'https://maven.minecraftforge.net' }
     jcenter()
     mavenCentral()
+    maven {
+      name "Parchment"
+      url "https://maven.parchmentmc.org"
+    }
   }
   dependencies {
     classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+    classpath 'org.parchmentmc:librarian:1.+'
   }
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 group = "knightminer"
 archivesBaseName = "SimpleAbsorption"
@@ -31,18 +37,15 @@ configurations {
 version = "${config.minecraft_version}-${config.mod_version}"
 
 sourceSets {
-  main {
-    resources {
-      srcDirs = [
-        "$rootDir/src/main/resources",
-        "$rootDir/src/generated/resources"
-      ]
-    }
-  }
+  main { resources {
+    srcDirs "$rootDir/src/generated/resources"
+    //But exclude the cache of the generated data from what gets built
+    exclude '.cache'
+  } }
 }
 
 minecraft {
-  mappings channel: 'official', version: '1.16.5'
+  mappings channel: 'parchment', version: "${config.parchment_version}-${config.minecraft_version}"
   accessTransformer project.file("src/main/resources/META-INF/accesstransformer.cfg")
   runs {
     client {
