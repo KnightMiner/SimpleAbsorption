@@ -3,6 +3,7 @@ package knightminer.simpleabsorption;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,7 @@ public class Config {
   }
 
   /** Called on config change to clear the cache */
-  public static void configChanged(final ModConfig.ModConfigEvent configEvent) {
+  public static void configChanged(final ModConfigEvent configEvent) {
     ModConfig config = configEvent.getConfig();
     if (config.getModId().equals(SimpleAbsorption.MOD_ID)) {
       CACHED_VALUES.forEach(CachedValue::invalidate);

@@ -1,39 +1,41 @@
 package knightminer.simpleabsorption;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.Tag;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.NonNullConsumer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.LogicalSide;
-
-import javax.annotation.Nullable;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /** Capability handling absorption NBT storage */
-public class AbsorptionCapability implements Capability.IStorage<AbsorptionHandler> {
+public class AbsorptionCapability {
 
 	/** Capability ID */
 	private static final ResourceLocation ID = new ResourceLocation(SimpleAbsorption.MOD_ID, "absorption_handler");
 	/** Capability type */
-	@CapabilityInject(AbsorptionHandler.class)
-	public static Capability<AbsorptionHandler> CAPABILITY = null;
+	public final static Capability<AbsorptionHandler> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 	/** Logic to run for the absorption handler */
 	private static final NonNullConsumer<AbsorptionHandler> HANDLER_CONSUMER =  AbsorptionHandler::playerTick;
 
 	/** Registers the event handlers and the capability */
 	public static void init() {
-		CapabilityManager.INSTANCE.register(AbsorptionHandler.class, new AbsorptionCapability(), () -> new AbsorptionHandler(null));
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(AbsorptionCapability::registerCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, AbsorptionCapability::attachCapability);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerTickEvent.class, AbsorptionCapability::playerTick);
+	}
+
+	/** Event listener to register the capability */
+	private static void registerCapability(RegisterCapabilitiesEvent event) {
+		event.register(AbsorptionHandler.class);
 	}
 
 	/** Event listener to attach the capability */
@@ -51,13 +53,4 @@ public class AbsorptionCapability implements Capability.IStorage<AbsorptionHandl
 		}
 		event.player.getCapability(CAPABILITY).ifPresent(HANDLER_CONSUMER);
 	}
-
-	@Nullable
-	@Override
-	public Tag writeNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side) {
-		return null;
-	}
-
-	@Override
-	public void readNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side, Tag nbt) {}
 }

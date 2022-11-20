@@ -1,12 +1,11 @@
 package knightminer.simpleabsorption;
 
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.ProtectionEnchantment;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
-
-import net.minecraft.world.item.enchantment.Enchantment.Rarity;
+import net.minecraftforge.common.ToolActions;
 
 /**
  * Enchantment granting bonus absorption hearts
@@ -35,7 +34,7 @@ public class AbsorptionEnchantment extends Enchantment {
   @Override
   public boolean canEnchant(ItemStack stack) {
     // apply to shields on anvils if enabled
-    if (Config.ENCHANT_SHIELDS.get() && stack.isShield(null)) {
+    if (Config.ENCHANT_SHIELDS.get() && stack.canPerformAction(ToolActions.SHIELD_BLOCK)) {
       return true;
     }
     return super.canEnchant(stack);

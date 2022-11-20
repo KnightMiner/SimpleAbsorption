@@ -2,20 +2,20 @@ package knightminer.simpleabsorption;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
@@ -69,16 +69,11 @@ public class AbsorptionSources {
 		float multiplyTotal = 1;
 		for (AttributeModifier modifier : event.removeAttribute(original)) {
 			switch (modifier.getOperation()) {
-				case ADDITION:
-					additiveBoost += modifier.getAmount();
-					break;
-				case MULTIPLY_BASE:
-					multiplyBase += modifier.getAmount();
-					break;
-				case MULTIPLY_TOTAL:
-					// operation is (1 + x1) * (1 + x2) * ..., so add the 1 before multiplying for the total
-					multiplyTotal *= (1 + modifier.getAmount());
-					break;
+				case ADDITION -> additiveBoost += modifier.getAmount();
+				case MULTIPLY_BASE -> multiplyBase += modifier.getAmount();
+				case MULTIPLY_TOTAL ->
+						// operation is (1 + x1) * (1 + x2) * ..., so add the 1 before multiplying for the total
+						multiplyTotal *= (1 + modifier.getAmount());
 			}
 		}
 		// add in armor unique modifiers
