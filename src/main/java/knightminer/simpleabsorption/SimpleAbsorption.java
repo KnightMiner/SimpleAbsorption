@@ -1,11 +1,11 @@
 package knightminer.simpleabsorption;
 
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -40,7 +40,6 @@ public class SimpleAbsorption {
 		IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addGenericListener(Enchantment.class, SimpleAbsorption::registerEnchants);
 		modBus.addGenericListener(Attribute.class, SimpleAbsorption::registerAttributes);
-		modBus.addListener(Config::configChanged);
 		modBus.addListener(SimpleAbsorption::setupAttributes);
 		modBus.addListener(SimpleAbsorption::commonSetup);
 	}
