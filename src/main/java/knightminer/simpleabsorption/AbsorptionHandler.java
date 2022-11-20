@@ -37,7 +37,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
   /** Runs on player update to update absorption shield, internal event */
   void playerTick() {
     // do nothing if attributes are not yet initialized
-    if (player == null || player.ticksExisted < 10) {
+    if (player == null || player.tickCount < 10) {
       return;
     }
 
@@ -60,7 +60,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
 
     // if natural regen is enabled, player must have full health
     // absorption acts like an extension on regular health there
-    if(player.getHealth() < player.getMaxHealth() && player.world.getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)) {
+    if(player.getHealth() < player.getMaxHealth() && player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)) {
       return;
     }
 
@@ -68,7 +68,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
     float efficiency = (float)player.getAttributeValue(SimpleAbsorption.ABSORPTION_EFFICIENCY);
 
     // food stat props
-    FoodStats stats = player.getFoodStats();
+    FoodStats stats = player.getFoodData();
     float saturation = stats.getSaturationLevel();
     int foodLevel = stats.getFoodLevel();
     // full food: rapid heal
@@ -90,7 +90,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
       timer += 1;
       // efficiency makes it a bit faster too
       if(timer >= (80 - (2 * efficiency))) {
-        player.addExhaustion(exhaustionRate);
+        player.causeFoodExhaustion(exhaustionRate);
         heal = 1.0f;
         timer = 0;
       }

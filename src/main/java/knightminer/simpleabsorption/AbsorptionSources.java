@@ -101,9 +101,9 @@ public class AbsorptionSources {
 		float efficiency = 0;
 		ItemStack stack = event.getItemStack();
 		EquipmentSlotType slot = event.getSlotType();
-		if (slot == MobEntity.getSlotForItemStack(stack)) {
+		if (slot == MobEntity.getEquipmentSlotForItem(stack)) {
 			// boost from enchant
-			max += EnchantmentHelper.getEnchantmentLevel(SimpleAbsorption.ABSORPTION, stack);
+			max += EnchantmentHelper.getItemEnchantmentLevel(SimpleAbsorption.ABSORPTION, stack);
 
 			// boost from gold
 			int goldBoost = Config.GOLD_ABSORPTION.get();
@@ -111,7 +111,7 @@ public class AbsorptionSources {
 			if (goldBoost > 0 || chainBoost > 0) {
 				Item item = stack.getItem();
 				if (item instanceof ArmorItem) {
-					IArmorMaterial material = ((ArmorItem)item).getArmorMaterial();
+					IArmorMaterial material = ((ArmorItem)item).getMaterial();
 					if (material == ArmorMaterial.GOLD) {
 						max += goldBoost;
 					} else if (material == ArmorMaterial.CHAIN) {
@@ -141,8 +141,8 @@ public class AbsorptionSources {
 	static void onAddPotion(PotionAddedEvent event) {
 		// if we added absorption, add the modifier based on the level
 		EffectInstance added = event.getPotionEffect();
-		if (Config.INCLUDE_POTION.get() && added.getPotion() == Effects.ABSORPTION) {
-			event.getEntityLiving().getAttributeManager().reapplyModifiers(ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX,
+		if (Config.INCLUDE_POTION.get() && added.getEffect() == Effects.ABSORPTION) {
+			event.getEntityLiving().getAttributes().addTransientAttributeModifiers(ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX,
 																																													new AttributeModifier(POTION_UUID, "simple_absorption_potion", (added.getAmplifier() + 1) * 4, Operation.ADDITION)));
 		}
 	}
@@ -153,7 +153,7 @@ public class AbsorptionSources {
 		// if we removed absorption, remove the modifier
 		// remove regardless of config in case it changed since the attribute was added
 		if (event.getPotion() == Effects.ABSORPTION) {
-			event.getEntityLiving().getAttributeManager().removeModifiers(POTION_REMOVAL);
+			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
 		}
 	}
 
@@ -162,8 +162,8 @@ public class AbsorptionSources {
 	static void onPotionExpire(PotionExpiryEvent event) {
 		// see above comment
 		EffectInstance instance = event.getPotionEffect();
-		if (instance != null && instance.getPotion() == Effects.ABSORPTION) {
-			event.getEntityLiving().getAttributeManager().removeModifiers(POTION_REMOVAL);
+		if (instance != null && instance.getEffect() == Effects.ABSORPTION) {
+			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
 		}
 	}
 }

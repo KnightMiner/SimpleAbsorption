@@ -6,6 +6,8 @@ import net.minecraft.enchantment.ProtectionEnchantment;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
+import net.minecraft.enchantment.Enchantment.Rarity;
+
 /**
  * Enchantment granting bonus absorption hearts
  */
@@ -21,7 +23,7 @@ public class AbsorptionEnchantment extends Enchantment {
   }
 
   @Override
-  protected boolean canApplyTogether(Enchantment enchant) {
+  protected boolean checkCompatibility(Enchantment enchant) {
     return this != enchant && !(enchant instanceof ProtectionEnchantment);
   }
 
@@ -31,12 +33,12 @@ public class AbsorptionEnchantment extends Enchantment {
   }
 
   @Override
-  public boolean canApply(ItemStack stack) {
+  public boolean canEnchant(ItemStack stack) {
     // apply to shields on anvils if enabled
     if (Config.ENCHANT_SHIELDS.get() && stack.isShield(null)) {
       return true;
     }
-    return super.canApply(stack);
+    return super.canEnchant(stack);
   }
 
   @Override
