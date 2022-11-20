@@ -1,10 +1,10 @@
 package knightminer.simpleabsorption;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.Tag;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -38,8 +38,8 @@ public class AbsorptionCapability implements Capability.IStorage<AbsorptionHandl
 
 	/** Event listener to attach the capability */
 	private static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-		if (event.getObject() instanceof PlayerEntity) {
-			event.addCapability(ID, new AbsorptionHandler((PlayerEntity) event.getObject()));
+		if (event.getObject() instanceof Player) {
+			event.addCapability(ID, new AbsorptionHandler((Player) event.getObject()));
 		}
 	}
 
@@ -54,10 +54,10 @@ public class AbsorptionCapability implements Capability.IStorage<AbsorptionHandl
 
 	@Nullable
 	@Override
-	public INBT writeNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side) {
+	public Tag writeNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side) {
 		return null;
 	}
 
 	@Override
-	public void readNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side, INBT nbt) {}
+	public void readNBT(Capability<AbsorptionHandler> capability, AbsorptionHandler instance, Direction side, Tag nbt) {}
 }

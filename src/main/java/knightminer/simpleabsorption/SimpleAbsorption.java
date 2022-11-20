@@ -1,11 +1,11 @@
 package knightminer.simpleabsorption;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantment.Rarity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -53,7 +53,7 @@ public class SimpleAbsorption {
 
 	/** Registers mod applicable enchants */
 	private static void registerEnchants(Register<Enchantment> event) {
-		Enchantment absorption = new AbsorptionEnchantment(Rarity.RARE, EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET);
+		Enchantment absorption = new AbsorptionEnchantment(Rarity.RARE, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
 		absorption.setRegistryName(ENCHANT_ID);
 		event.getRegistry().register(absorption);
 	}

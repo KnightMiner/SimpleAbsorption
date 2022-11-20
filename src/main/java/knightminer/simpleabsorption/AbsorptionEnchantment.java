@@ -1,20 +1,20 @@
 package knightminer.simpleabsorption;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.enchantment.ProtectionEnchantment;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.ProtectionEnchantment;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 
-import net.minecraft.enchantment.Enchantment.Rarity;
+import net.minecraft.world.item.enchantment.Enchantment.Rarity;
 
 /**
  * Enchantment granting bonus absorption hearts
  */
 @SuppressWarnings("WeakerAccess")
 public class AbsorptionEnchantment extends Enchantment {
-  public AbsorptionEnchantment(Rarity rarity, EquipmentSlotType... slots) {
-    super(rarity, EnchantmentType.ARMOR, slots);
+  public AbsorptionEnchantment(Rarity rarity, EquipmentSlot... slots) {
+    super(rarity, EnchantmentCategory.ARMOR, slots);
   }
 
   @Override

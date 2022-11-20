@@ -2,20 +2,20 @@ package knightminer.simpleabsorption;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.AttributeModifier.Operation;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.IArmorMaterial;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
 import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
@@ -29,9 +29,9 @@ import java.util.UUID;
 /** Logic adding absorption from all relevant sources */
 public class AbsorptionSources {
 	/** Generates a UUID map for all slot types from a string key */
-	private static Map<EquipmentSlotType,UUID> makeUUIDMap(String key) {
-		Map<EquipmentSlotType,UUID> map = new EnumMap<>(EquipmentSlotType.class);
-		for (EquipmentSlotType type : EquipmentSlotType.values()) {
+	private static Map<EquipmentSlot,UUID> makeUUIDMap(String key) {
+		Map<EquipmentSlot,UUID> map = new EnumMap<>(EquipmentSlot.class);
+		for (EquipmentSlot type : EquipmentSlot.values()) {
 			map.put(type, UUID.nameUUIDFromBytes((key + type.getName()).getBytes()));
 		}
 		return map;
@@ -41,12 +41,12 @@ public class AbsorptionSources {
 	private static final UUID POTION_UUID = UUID.fromString("e7c88f6c-4d46-11eb-ae93-0242ac130002");
 
 	/** Map of slot to UUID to ensure consistent removals */
-	private static final Map<EquipmentSlotType,UUID> ARMOR_ADD_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_add");
-	private static final Map<EquipmentSlotType,UUID> ARMOR_MULTIPLY_TOTAL_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_multiply_total");
-	private static final Map<EquipmentSlotType,UUID> ARMOR_MULTIPLY_BASE_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_multiply_base");
-	private static final Map<EquipmentSlotType,UUID> EFFICIENCY_ADD_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_regen_add");
-	private static final Map<EquipmentSlotType,UUID> EFFICIENCY_MULTIPLY_TOTAL_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_efficiency_multiply_total");
-	private static final Map<EquipmentSlotType,UUID> EFFICIENCY_MULTIPLY_BASE_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_efficiency_multiply_base");
+	private static final Map<EquipmentSlot,UUID> ARMOR_ADD_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_add");
+	private static final Map<EquipmentSlot,UUID> ARMOR_MULTIPLY_TOTAL_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_multiply_total");
+	private static final Map<EquipmentSlot,UUID> ARMOR_MULTIPLY_BASE_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_armor_multiply_base");
+	private static final Map<EquipmentSlot,UUID> EFFICIENCY_ADD_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_regen_add");
+	private static final Map<EquipmentSlot,UUID> EFFICIENCY_MULTIPLY_TOTAL_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_efficiency_multiply_total");
+	private static final Map<EquipmentSlot,UUID> EFFICIENCY_MULTIPLY_BASE_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_efficiency_multiply_base");
 
 	/** Cached object for removing the potion attribute */
 	private static final Multimap<Attribute, AttributeModifier> POTION_REMOVAL = ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX, new AttributeModifier(POTION_UUID, "simple_absorption_potion", 0, Operation.ADDITION));
@@ -100,8 +100,8 @@ public class AbsorptionSources {
 		float max = 0;
 		float efficiency = 0;
 		ItemStack stack = event.getItemStack();
-		EquipmentSlotType slot = event.getSlotType();
-		if (slot == MobEntity.getEquipmentSlotForItem(stack)) {
+		EquipmentSlot slot = event.getSlotType();
+		if (slot == Mob.getEquipmentSlotForItem(stack)) {
 			// boost from enchant
 			max += EnchantmentHelper.getItemEnchantmentLevel(SimpleAbsorption.ABSORPTION, stack);
 
@@ -111,10 +111,10 @@ public class AbsorptionSources {
 			if (goldBoost > 0 || chainBoost > 0) {
 				Item item = stack.getItem();
 				if (item instanceof ArmorItem) {
-					IArmorMaterial material = ((ArmorItem)item).getMaterial();
-					if (material == ArmorMaterial.GOLD) {
+					ArmorMaterial material = ((ArmorItem)item).getMaterial();
+					if (material == ArmorMaterials.GOLD) {
 						max += goldBoost;
-					} else if (material == ArmorMaterial.CHAIN) {
+					} else if (material == ArmorMaterials.CHAIN) {
 						efficiency += chainBoost;
 					}
 				}
@@ -140,8 +140,8 @@ public class AbsorptionSources {
 	@SubscribeEvent
 	static void onAddPotion(PotionAddedEvent event) {
 		// if we added absorption, add the modifier based on the level
-		EffectInstance added = event.getPotionEffect();
-		if (Config.INCLUDE_POTION.get() && added.getEffect() == Effects.ABSORPTION) {
+		MobEffectInstance added = event.getPotionEffect();
+		if (Config.INCLUDE_POTION.get() && added.getEffect() == MobEffects.ABSORPTION) {
 			event.getEntityLiving().getAttributes().addTransientAttributeModifiers(ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX,
 																																													new AttributeModifier(POTION_UUID, "simple_absorption_potion", (added.getAmplifier() + 1) * 4, Operation.ADDITION)));
 		}
@@ -152,7 +152,7 @@ public class AbsorptionSources {
 	static void onRemovePotion(PotionRemoveEvent event) {
 		// if we removed absorption, remove the modifier
 		// remove regardless of config in case it changed since the attribute was added
-		if (event.getPotion() == Effects.ABSORPTION) {
+		if (event.getPotion() == MobEffects.ABSORPTION) {
 			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
 		}
 	}
@@ -161,8 +161,8 @@ public class AbsorptionSources {
 	@SubscribeEvent
 	static void onPotionExpire(PotionExpiryEvent event) {
 		// see above comment
-		EffectInstance instance = event.getPotionEffect();
-		if (instance != null && instance.getEffect() == Effects.ABSORPTION) {
+		MobEffectInstance instance = event.getPotionEffect();
+		if (instance != null && instance.getEffect() == MobEffects.ABSORPTION) {
 			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
 		}
 	}

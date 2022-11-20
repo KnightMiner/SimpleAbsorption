@@ -1,10 +1,10 @@
 package knightminer.simpleabsorption;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.FoodStats;
-import net.minecraft.world.GameRules;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.level.GameRules;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -14,18 +14,18 @@ import javax.annotation.Nullable;
 /**
  * Actual logic that grants players absorption.
  */
-public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
+public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
   /** Capability lazy instance */
   private final LazyOptional<AbsorptionHandler> lazy = LazyOptional.of(() -> this);
   /** Player instance, nullable because forge wants default caps or something weird like that */
   @Nullable
-  private final PlayerEntity player;
+  private final Player player;
   /** Timer to delay healing */
   private int timer = 0;
   /** Max absorption value last tick */
   private float lastMax = 0;
 
-  public AbsorptionHandler(@Nullable PlayerEntity player) {
+  public AbsorptionHandler(@Nullable Player player) {
     this.player = player;
   }
 
@@ -68,7 +68,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
     float efficiency = (float)player.getAttributeValue(SimpleAbsorption.ABSORPTION_EFFICIENCY);
 
     // food stat props
-    FoodStats stats = player.getFoodData();
+    FoodData stats = player.getFoodData();
     float saturation = stats.getSaturationLevel();
     int foodLevel = stats.getFoodLevel();
     // full food: rapid heal
@@ -112,15 +112,15 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundNBT> {
   private static final String TAG_MAX = "simple_absorption_max";
 
   @Override
-  public CompoundNBT serializeNBT() {
-    CompoundNBT nbt = new CompoundNBT();
+  public CompoundTag serializeNBT() {
+    CompoundTag nbt = new CompoundTag();
     nbt.putByte(TAG_TIMER, (byte)timer);
     nbt.putFloat(TAG_MAX, lastMax);
     return nbt;
   }
 
   @Override
-  public void deserializeNBT(CompoundNBT nbt) {
+  public void deserializeNBT(CompoundTag nbt) {
     timer = nbt.getByte(TAG_TIMER);
     lastMax = nbt.getFloat(TAG_MAX);
   }
