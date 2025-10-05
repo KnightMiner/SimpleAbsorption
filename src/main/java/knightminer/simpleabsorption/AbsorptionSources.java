@@ -1,5 +1,6 @@
 package knightminer.simpleabsorption;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,14 +18,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
-import net.minecraftforge.event.entity.living.PotionEvent.PotionAddedEvent;
-import net.minecraftforge.event.entity.living.PotionEvent.PotionExpiryEvent;
-import net.minecraftforge.event.entity.living.PotionEvent.PotionRemoveEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 /** Logic adding absorption from all relevant sources */
 public class AbsorptionSources {
@@ -49,7 +49,7 @@ public class AbsorptionSources {
 	private static final Map<EquipmentSlot,UUID> EFFICIENCY_MULTIPLY_BASE_UUID = makeUUIDMap(SimpleAbsorption.MOD_ID + "_efficiency_multiply_base");
 
 	/** Cached object for removing the potion attribute */
-	private static final Multimap<Attribute, AttributeModifier> POTION_REMOVAL = ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX, new AttributeModifier(POTION_UUID, "simple_absorption_potion", 0, Operation.ADDITION));
+	private static final Supplier<Multimap<Attribute, AttributeModifier>> POTION_REMOVAL = Suppliers.memoize(() -> ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX.get(), new AttributeModifier(POTION_UUID, "simple_absorption_potion", 0,Operation.ADDITION)));
 
 
 	/* Absorption sources */
@@ -98,7 +98,7 @@ public class AbsorptionSources {
 		EquipmentSlot slot = event.getSlotType();
 		if (slot == Mob.getEquipmentSlotForItem(stack)) {
 			// boost from enchant
-			max += EnchantmentHelper.getItemEnchantmentLevel(SimpleAbsorption.ABSORPTION, stack);
+			max += EnchantmentHelper.getItemEnchantmentLevel(SimpleAbsorption.ABSORPTION.get(), stack);
 
 			// boost from gold
 			int goldBoost = Config.GOLD_ABSORPTION.get();
@@ -119,46 +119,46 @@ public class AbsorptionSources {
 		// replace armor means attributes on all 6 slots are replaced with absorption
 		if (Config.REPLACE_ARMOR.get()) {
 			// armor -> absorption max
-			max += replaceAttribute(event, Attributes.ARMOR, SimpleAbsorption.ABSORPTION_MAX, "simple_absorption_max",
+			max += replaceAttribute(event, Attributes.ARMOR, SimpleAbsorption.ABSORPTION_MAX.get(), "simple_absorption_max",
 															ARMOR_MULTIPLY_BASE_UUID.get(slot), ARMOR_MULTIPLY_TOTAL_UUID.get(slot));
 			// toughness -> absorption efficiency
-			efficiency += replaceAttribute(event, Attributes.ARMOR_TOUGHNESS, SimpleAbsorption.ABSORPTION_EFFICIENCY, "simple_absorption_efficiency",
+			efficiency += replaceAttribute(event, Attributes.ARMOR_TOUGHNESS, SimpleAbsorption.ABSORPTION_EFFICIENCY.get(), "simple_absorption_efficiency",
 																		 EFFICIENCY_MULTIPLY_BASE_UUID.get(slot), EFFICIENCY_MULTIPLY_TOTAL_UUID.get(slot));
 		}
 
 		// add the attributes if we have any changes
-		if (max != 0) event.addModifier(SimpleAbsorption.ABSORPTION_MAX, new AttributeModifier(ARMOR_ADD_UUID.get(slot), "simple_absorption_armor", max, Operation.ADDITION));
-		if (efficiency != 0) event.addModifier(SimpleAbsorption.ABSORPTION_EFFICIENCY, new AttributeModifier(EFFICIENCY_ADD_UUID.get(slot), "simple_absorption_efficiency", efficiency, Operation.ADDITION));
+		if (max != 0) event.addModifier(SimpleAbsorption.ABSORPTION_MAX.get(), new AttributeModifier(ARMOR_ADD_UUID.get(slot), "simple_absorption_armor", max, Operation.ADDITION));
+		if (efficiency != 0) event.addModifier(SimpleAbsorption.ABSORPTION_EFFICIENCY.get(), new AttributeModifier(EFFICIENCY_ADD_UUID.get(slot), "simple_absorption_efficiency", efficiency, Operation.ADDITION));
 	}
 
 	/** Adds the attribute when absorption is added */
 	@SubscribeEvent
-	static void onAddPotion(PotionAddedEvent event) {
+	static void onAdd(MobEffectEvent.Added event) {
 		// if we added absorption, add the modifier based on the level
-		MobEffectInstance added = event.getPotionEffect();
+		MobEffectInstance added = event.getEffectInstance();
 		if (Config.INCLUDE_POTION.get() && added.getEffect() == MobEffects.ABSORPTION) {
-			event.getEntityLiving().getAttributes().addTransientAttributeModifiers(ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX,
+			event.getEntity().getAttributes().addTransientAttributeModifiers(ImmutableMultimap.of(SimpleAbsorption.ABSORPTION_MAX.get(),
 																																													new AttributeModifier(POTION_UUID, "simple_absorption_potion", (added.getAmplifier() + 1) * 4, Operation.ADDITION)));
 		}
 	}
 
 	/** Removes the attribute when absorption is removed */
 	@SubscribeEvent
-	static void onRemovePotion(PotionRemoveEvent event) {
+	static void onRemove(MobEffectEvent.Remove event) {
 		// if we removed absorption, remove the modifier
 		// remove regardless of config in case it changed since the attribute was added
-		if (event.getPotion() == MobEffects.ABSORPTION) {
-			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
+		if (event.getEffect() == MobEffects.ABSORPTION) {
+			event.getEntity().getAttributes().removeAttributeModifiers(POTION_REMOVAL.get());
 		}
 	}
 
 	/** Removes the attribute when absorption timer runs out */
 	@SubscribeEvent
-	static void onPotionExpire(PotionExpiryEvent event) {
+	static void onExpire(MobEffectEvent.Expired event) {
 		// see above comment
-		MobEffectInstance instance = event.getPotionEffect();
+		MobEffectInstance instance = event.getEffectInstance();
 		if (instance != null && instance.getEffect() == MobEffects.ABSORPTION) {
-			event.getEntityLiving().getAttributes().removeAttributeModifiers(POTION_REMOVAL);
+			event.getEntity().getAttributes().removeAttributeModifiers(POTION_REMOVAL.get());
 		}
 	}
 }

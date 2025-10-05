@@ -13,22 +13,22 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /** Capability handling absorption NBT storage */
 public class AbsorptionCapability {
 
 	/** Capability ID */
-	private static final ResourceLocation ID = new ResourceLocation(SimpleAbsorption.MOD_ID, "absorption_handler");
+	private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(SimpleAbsorption.MOD_ID, "absorption_handler");
 	/** Capability type */
 	public final static Capability<AbsorptionHandler> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
 	/** Logic to run for the absorption handler */
 	private static final NonNullConsumer<AbsorptionHandler> HANDLER_CONSUMER =  AbsorptionHandler::playerTick;
 
 	/** Registers the event handlers and the capability */
-	public static void init() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(AbsorptionCapability::registerCapability);
+	public static void init(IEventBus modBus) {
+		modBus.addListener(AbsorptionCapability::registerCapability);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, AbsorptionCapability::attachCapability);
 		MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, PlayerTickEvent.class, AbsorptionCapability::playerTick);
 	}
