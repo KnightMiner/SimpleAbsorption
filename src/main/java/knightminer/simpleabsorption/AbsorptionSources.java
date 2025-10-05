@@ -16,7 +16,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -98,7 +97,7 @@ public class AbsorptionSources {
 		EquipmentSlot slot = event.getSlotType();
 		if (slot == Mob.getEquipmentSlotForItem(stack)) {
 			// boost from enchant
-			max += EnchantmentHelper.getItemEnchantmentLevel(SimpleAbsorption.ABSORPTION.get(), stack);
+			max += stack.getEnchantmentLevel(SimpleAbsorption.ABSORPTION.get());
 
 			// boost from gold
 			int goldBoost = Config.GOLD_ABSORPTION.get();

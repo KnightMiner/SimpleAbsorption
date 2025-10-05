@@ -60,7 +60,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
 
     // if natural regen is enabled, player must have full health
     // absorption acts like an extension on regular health there
-    if(player.getHealth() < player.getMaxHealth() && player.level.getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)) {
+    if(player.getHealth() < player.getMaxHealth() && player.level().getGameRules().getBoolean(GameRules.RULE_NATURAL_REGENERATION)) {
       return;
     }
 
