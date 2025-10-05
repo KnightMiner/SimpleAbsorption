@@ -22,9 +22,6 @@ legacyForge {
       // Recommended logging level for the console
       systemProperty 'forge.logging.console.level', 'debug'
 
-      // For some reason this isn't being added by MDG so we have to open it manually...
-      jvmArguments.addAll '--add-opens', 'java.base/java.lang.invoke=cpw.mods.securejarhandler'
-
       client()
     }
 
@@ -33,9 +30,6 @@ legacyForge {
       systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
       // Recommended logging level for the console
       systemProperty 'forge.logging.console.level', 'debug'
-
-      // For some reason this isn't being added by MDG so we have to open it manually...
-      jvmArguments.addAll '--add-opens', 'java.base/java.lang.invoke=cpw.mods.securejarhandler'
 
       server()
     }
@@ -47,9 +41,6 @@ legacyForge {
       systemProperty 'forge.logging.console.level', 'debug'
 
       programArguments.addAll '--mod', 'simple_absorption', '--all', '--output', 'src/generated/resources/'
-
-      // For some reason this isn't being added by MDG so we have to open it manually...
-      jvmArguments.addAll '--add-opens', 'java.base/java.lang.invoke=cpw.mods.securejarhandler'
 
       data()
     }
