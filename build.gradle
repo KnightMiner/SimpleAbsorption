@@ -1,175 +1,103 @@
-buildscript {
-  repositories {
-    maven { url = 'https://maven.minecraftforge.net' }
-    jcenter()
-    mavenCentral()
-    maven {
-      name "Parchment"
-      url "https://maven.parchmentmc.org"
-    }
-  }
-  dependencies {
-    classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-    classpath 'org.parchmentmc:librarian:1.+'
-  }
+plugins {
+  // Apply the plugin. You can find the latest version at https://projects.neoforged.net/neoforged/ModDevGradle
+  id 'net.neoforged.moddev.legacyforge' version '2.0.112'
+  id 'idea'
 }
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 group = "knightminer"
 archivesBaseName = "SimpleAbsorption"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+version = "${minecraft_version}-${mod_version}"
 
-// External properties
-ext.configFile = file "build.properties"
-configFile.withReader {
-  // Load config.  It shall from now be referenced as simply config or project.config
-  def prop = new Properties()
-  prop.load(it)
-  project.ext.config = new ConfigSlurper().parse prop
-}
-configurations {
-    deployerJars
-}
+legacyForge {
+  version = "${minecraft_version}-${forge_version}"
 
-version = "${config.minecraft_version}-${config.mod_version}"
+  // Validate AT files and raise errors when they have invalid targets
+  validateAccessTransformers = true
 
-sourceSets {
-  main { resources {
-    srcDirs "$rootDir/src/generated/resources"
-    //But exclude the cache of the generated data from what gets built
-    exclude '.cache'
-  } }
-}
-
-minecraft {
-  mappings channel: 'parchment', version: "${config.parchment_version}-${config.minecraft_version}"
-  accessTransformer project.file("src/main/resources/META-INF/accesstransformer.cfg")
   runs {
     client {
-      workingDirectory project.file('run')
       // Recommended logging data for a userdev environment
-      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
       // Recommended logging level for the console
-      property 'forge.logging.console.level', 'debug'
-      mods {
-        simple_absorption {
-          source sourceSets.main
-        }
-      }
+      systemProperty 'forge.logging.console.level', 'debug'
+
+      client()
     }
 
     server {
-      workingDirectory project.file('run')
       // Recommended logging data for a userdev environment
-      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
       // Recommended logging level for the console
-      property 'forge.logging.console.level', 'debug'
-      mods {
-        simple_absorption {
-          source sourceSets.main
-        }
-      }
+      systemProperty 'forge.logging.console.level', 'debug'
+
+      server()
     }
 
     data {
-      workingDirectory project.file('run')
       // Recommended logging data for a userdev environment
-      property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+      systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
       // Recommended logging level for the console
-      property 'forge.logging.console.level', 'debug'
-      args '--mod', 'simple_absorption', '--all', '--output', file('src/generated/resources/')
-      mods {
-        simple_absorption {
-           source sourceSets.main
-        }
-      }
+      systemProperty 'forge.logging.console.level', 'debug'
+
+      programArguments.addAll '--mod', 'simple_absorption', '--all', '--output', 'src/generated/resources/'
+
+      data()
+    }
+  }
+
+  mods {
+    "${mod_id}" {
+      sourceSet sourceSets.main
     }
   }
 }
 
 repositories {
-  // JEI
   maven {
-    name 'DVS1 Maven FS'
+    name 'DVS1 Maven FS' // JEI Maven for 1.19.2 and below
     url 'https://dvs1.progwml6.com/files/maven'
   }
 }
 
 dependencies {
-  minecraft "net.minecraftforge:forge:${config.minecraft_version}-${config.forge_version}"
-    
   // compile against the JEI API but do not include it at runtime
-  compileOnly fg.deobf("mezz.jei:jei-${config.minecraft_version}:${config.jei_version}:api")
+  modCompileOnly "mezz.jei:jei-${minecraft_version}:${jei_version}:api"
   // at runtime, use the full JEI jar
-  runtimeOnly fg.deobf("mezz.jei:jei-${config.minecraft_version}:${config.jei_version}")
+  modRuntimeOnly "mezz.jei:jei-${minecraft_version}:${jei_version}"
 }
 
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+  var replaceProperties = [
+          mod_id            : mod_id,
+          version           : version,
+          minecraft_range   : minecraft_range,
+          forge_range       : forge_range,
+          loader_range      : loader_range
+  ]
+  inputs.properties replaceProperties
+  expand replaceProperties
+  from "src/main/templates"
+  into "build/generated/sources/modMetadata"
+}
 
-// process mods.toml to inject variables
-def modsTomlSpec = copySpec{
-  from(sourceSets.main.resources) {
-    include 'META-INF/mods.toml'
-    expand 'version': config.mod_version,
-            'minecraft_range': config.minecraft_range,
-            'forge_range': config.forge_range
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+legacyForge.ideSyncTask generateModMetadata
+
+
+java {
+    withSourcesJar()
+}
+
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+  module {
+    downloadSources = true
+    downloadJavadoc = true
   }
-}
-// need to copy into each build directory, unfortunately does not seem easy to do this automatically
-def buildPaths = [
-        "$rootDir/out/production/resources", // IDEA
-        "$rootDir/bin", // Eclipse
-]
-
-// task to add mods.toml to all relevant folders
-task replaceResources {
-  // copy for gradle
-  copy {
-    outputs.upToDateWhen { false }
-    with modsTomlSpec
-    into processResources.destinationDir
-  }
-  // copy for IDEs
-  buildPaths.each { path ->
-    if (new File(path).exists()) {
-      copy {
-        outputs.upToDateWhen { false }
-        with modsTomlSpec
-        into path
-      }
-    }
-  }
-}
-
-processResources {
-  exclude 'META-INF/mods.toml'
-  finalizedBy replaceResources
-}
-
-jar {
-  manifest {
-    attributes([
-      "Specification-Title": "Simple Absorption",
-      "Specification-Vendor": "KnightMiner",
-      "Specification-Version": "1", // We are version 1 of ourselves
-      "Implementation-Title": project.name,
-      "Implementation-Version": "${version}",
-      "Implementation-Vendor": "KnightMiner",
-      "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-    ])
-  }
-}
-
-jar.finalizedBy('reobfJar')
-
-// because the normal output has been made to be obfuscated
-task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
 }

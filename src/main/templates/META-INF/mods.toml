@@ -1,9 +1,9 @@
 modLoader="javafml"
-loaderVersion="[33,)"
+loaderVersion="${loader_range}"
 issueTrackerURL="https://github.com/KnightMiner/SimpleAbsorption/issues/"
 license="MIT"
 [[mods]]
-modId="simple_absorption"
+modId="${mod_id}"
 version="${version}"
 displayName="Simple Absorption"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/simple-absorption"
@@ -13,13 +13,13 @@ authors="KnightMiner"
 description='''
 Mod adding a simple absorption shield for the player, restored when the hunger bar is full.
 '''
-[[dependencies.simple_absorption]] 
+[[dependencies."${mod_id}"]]
     modId="forge"
     mandatory=true
     versionRange="${forge_range}" #mandatory
     ordering="AFTER"
     side="BOTH"
-[[dependencies.simple_absorption]]
+[[dependencies."${mod_id}"]]
     modId="minecraft"
     mandatory=true
     versionRange="${minecraft_range}"
