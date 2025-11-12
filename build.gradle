@@ -32,7 +32,7 @@ legacyForge {
       systemProperty 'forge.logging.console.level', 'debug'
 
       server()
-    }
+    }	
 
     data {
       // Recommended logging data for a userdev environment
@@ -88,6 +88,10 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 // To avoid having to run "generateModMetadata" manually, make it run on every project reload
 legacyForge.ideSyncTask generateModMetadata
+
+java {
+    withSourcesJar()
+}
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
