@@ -1,0 +1,13 @@
+{
+  "modifier_id": "simple_absorption:absorption",
+  "text": [
+    {
+      "text": "Like a sponge! But less wet. And more painful."
+    }
+  ],
+  "effects": [
+    "Gives bonus hearts to absorb damage",
+    "Absorption hearts regenerate with a near full hunger bar",
+    "Requires 1 upgrade slot per level"
+  ]
+}
