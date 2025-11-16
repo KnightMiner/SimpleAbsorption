@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
   "type": "tconstruct:incremental_modifier",
   "allow_crystal": true,
   "amount_per_item": 1,

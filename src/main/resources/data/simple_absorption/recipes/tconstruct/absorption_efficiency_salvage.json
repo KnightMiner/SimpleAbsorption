@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
   "type": "tconstruct:modifier_salvage",
   "modifier": "simple_absorption:absorption_efficiency",
   "slots": {
