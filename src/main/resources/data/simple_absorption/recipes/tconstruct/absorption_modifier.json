@@ -18,5 +18,8 @@
   },
   "tools": {
     "tag": "tconstruct:modifiable/armor/worn"
+  },
+  "level": {
+    "max": 5
   }
 }
