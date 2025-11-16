@@ -58,6 +58,10 @@ repositories {
     name 'ModMaven' // All JEI versions
     url 'https://modmaven.dev'
   }
+  maven {
+    name 'DVS1 Maven FS' // Tinkers Construct
+    url 'https://dvs1.progwml6.com/files/maven'
+  }
 }
 
 dependencies {
@@ -65,6 +69,10 @@ dependencies {
   modCompileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
   // at runtime, use the full JEI jar
   modRuntimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
+
+  // Mantle and Tinkers Construct
+  modImplementation "slimeknights.mantle:Mantle:${minecraft_version}-${mantle_version}"
+  modImplementation "slimeknights.tconstruct:TConstruct:${minecraft_version}-${tinkers_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -75,7 +83,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
           version           : version,
           minecraft_range   : minecraft_range,
           forge_range       : forge_range,
-          loader_range      : loader_range
+          loader_range      : loader_range,
+          tinkers_range     : tinkers_range
   ]
   inputs.properties replaceProperties
   expand replaceProperties

@@ -25,3 +25,9 @@ Mod adding a simple absorption shield for the player, restored when the hunger b
     versionRange="${minecraft_range}"
     ordering="NONE"
     side="BOTH"
+[[dependencies."${mod_id}"]]
+    modId="tconstruct"
+    mandatory=false
+    versionRange="${tinkers_range}"
+    ordering="AFTER"
+    side="BOTH"

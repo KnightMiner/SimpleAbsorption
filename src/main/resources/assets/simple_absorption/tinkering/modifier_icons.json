@@ -1,0 +1,4 @@
+{
+  "simple_absorption:absorption": "simple_absorption:gui/modifiers/absorption",
+  "simple_absorption:absorption_efficiency": "simple_absorption:gui/modifiers/absorption_efficiency"
+}
