@@ -10,7 +10,6 @@
     }
   ],
   "more_text_space": true,
-  "tool_filter": "tconstruct:modifiable/shields",
   "effects": [
     "Can apply levels incrementally",
     "Requires 1 defense slot per level",
