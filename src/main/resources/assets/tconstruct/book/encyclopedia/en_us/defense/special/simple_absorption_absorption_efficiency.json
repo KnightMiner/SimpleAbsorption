@@ -13,6 +13,6 @@
   "effects": [
     "Can apply levels incrementally",
     "Requires 1 defense slot per level",
-    "Only applicable to shields"
+    "Only applicable to staffs and shields"
   ]
 }
