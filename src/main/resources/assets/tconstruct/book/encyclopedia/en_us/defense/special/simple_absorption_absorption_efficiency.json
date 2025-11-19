@@ -2,7 +2,7 @@
   "modifier_id": "simple_absorption:absorption_efficiency",
   "text": [
     {
-      "text": "Absorption regeneration starts with half a shank less hunger, and will happen faster when not at full hunger."
+      "text": "Absorption regeneration starts with half a shank less hunger per level, and will happen faster when not at full hunger."
     },
     {
       "text": "Regenerating absorption hearts also uses less hunger.",
