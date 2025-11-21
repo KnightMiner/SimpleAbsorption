@@ -42,7 +42,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
     }
 
     // determine the max from the attribute
-    float max = (float)(Config.BASE_ABSORPTION.get() + player.getAttributeValue(SimpleAbsorption.ABSORPTION_MAX));
+    float max = (float)(Config.BASE_ABSORPTION.get() + player.getAttributeValue(SimpleAbsorption.ABSORPTION_MAX.get()));
     float absorption = player.getAbsorptionAmount();
 
     // if our max dropped and we now have too much, reduce by the difference
@@ -65,7 +65,7 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
     }
 
     // determine efficiency before we regen
-    float efficiency = (float)player.getAttributeValue(SimpleAbsorption.ABSORPTION_EFFICIENCY);
+    float efficiency = (float)player.getAttributeValue(SimpleAbsorption.ABSORPTION_EFFICIENCY.get());
 
     // food stat props
     FoodData stats = player.getFoodData();

@@ -32,7 +32,7 @@ legacyForge {
       systemProperty 'forge.logging.console.level', 'debug'
 
       server()
-    }
+    }	
 
     data {
       // Recommended logging data for a userdev environment
@@ -62,9 +62,9 @@ repositories {
 
 dependencies {
   // compile against the JEI API but do not include it at runtime
-  modCompileOnly "mezz.jei:jei-${minecraft_version}:${jei_version}:api"
+  modCompileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
   // at runtime, use the full JEI jar
-  modRuntimeOnly "mezz.jei:jei-${minecraft_version}:${jei_version}"
+  modRuntimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -88,7 +88,6 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 // To avoid having to run "generateModMetadata" manually, make it run on every project reload
 legacyForge.ideSyncTask generateModMetadata
-
 
 java {
     withSourcesJar()
