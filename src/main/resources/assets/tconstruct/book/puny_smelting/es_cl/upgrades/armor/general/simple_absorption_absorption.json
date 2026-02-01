@@ -1,0 +1,13 @@
+{
+  "modifier_id": "simple_absorption:absorption",
+  "text": [
+    {
+      "text": "¡Como una esponja! Pero menos mojada. Y más dolorosa."
+    }
+  ],
+  "effects": [
+    "Otorga corazones extra para absorber el daño",
+    "Los corazones de absorción se regeneran con una barra de hambre casi llena",
+    "Requiere 1 slot de mejora cada nivel"
+  ]
+}
