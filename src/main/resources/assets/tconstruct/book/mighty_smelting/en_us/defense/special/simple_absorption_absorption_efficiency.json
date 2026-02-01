@@ -1,0 +1,14 @@
+{
+  "modifier_id": "simple_absorption:absorption_efficiency",
+  "text": [
+    {
+      "text": "The mitochondria is the powerhouse of the cell."
+    }
+  ],
+  "effects": [
+    "Makes absorption hearts regenerate more efficiently",
+    "Can apply levels incrementally",
+    "Requires 1 defense slot per level",
+    "Only applicable to staffs and shields"
+  ]
+}

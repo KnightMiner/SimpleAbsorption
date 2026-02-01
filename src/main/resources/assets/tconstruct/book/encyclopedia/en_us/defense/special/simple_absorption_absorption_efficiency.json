@@ -1,0 +1,18 @@
+{
+  "modifier_id": "simple_absorption:absorption_efficiency",
+  "text": [
+    {
+      "text": "Absorption regeneration starts with half a shank less hunger per level, and will happen faster when not at full hunger."
+    },
+    {
+      "text": "Regenerating absorption hearts also uses less hunger.",
+      "paragraph": true
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Can apply levels incrementally",
+    "Requires 1 defense slot per level",
+    "Only applicable to staffs and shields"
+  ]
+}

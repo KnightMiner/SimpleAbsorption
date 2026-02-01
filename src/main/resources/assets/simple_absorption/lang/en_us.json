@@ -1,5 +1,14 @@
 {
   "enchantment.simple_absorption.absorption": "Absorption",
   "simple_absorption.absorption_max": "Max Absorption",
-  "simple_absorption.absorption_efficiency": "Absorption Efficiency"
+  "simple_absorption.absorption_efficiency": "Absorption Efficiency",
+
+
+  "modifier.simple_absorption.absorption": "Absorption",
+  "modifier.simple_absorption.absorption.flavor": "Almost Revitalizing!",
+  "modifier.simple_absorption.absorption.description": "Gives bonus absorption hearts",
+
+  "modifier.simple_absorption.absorption_efficiency": "Absorption Efficiency",
+  "modifier.simple_absorption.absorption_efficiency.flavor": "Almost Regeneration!",
+  "modifier.simple_absorption.absorption_efficiency.description": "Makes absorption less hunger-hungry when regenerating"
 }

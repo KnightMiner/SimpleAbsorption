@@ -1,0 +1,16 @@
+{
+  "modifier_id": "simple_absorption:absorption",
+  "text": [
+    {
+      "text": "Gives you half an absorption heart per level."
+    },
+    {
+      "text": "Absorption will regenerate slowly when you have over 9 shanks of hunger, and much faster when you are at full hunger",
+      "paragraph": true
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requires 1 upgrade slot per level"
+  ]
+}

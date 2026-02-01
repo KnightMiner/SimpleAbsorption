@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "tconstruct"
+    }
+  ],
+  "type": "tconstruct:incremental_modifier",
+  "allow_crystal": true,
+  "amount_per_item": 1,
+  "input": {
+    "item": "minecraft:golden_apple"
+  },
+  "needed_per_level": 1,
+  "result": "simple_absorption:absorption",
+  "slots": {
+    "upgrades": 1
+  },
+  "tools": {
+    "tag": "tconstruct:modifiable/armor/worn"
+  },
+  "level": {
+    "max": 5
+  }
+}
