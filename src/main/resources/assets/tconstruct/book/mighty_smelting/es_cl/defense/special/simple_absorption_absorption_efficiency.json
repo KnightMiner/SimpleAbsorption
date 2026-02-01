@@ -1,0 +1,14 @@
+{
+  "modifier_id": "simple_absorption:absorption_efficiency",
+  "text": [
+    {
+      "text": "La mitocondria es la fuente de poder de la célula."
+    }
+  ],
+  "effects": [
+    "Hace que los corazones de absorción se regeneren más eficientemente",
+    "Aplica los niveles incrementalmente",
+    "Requiere 1 slot de defensa cada nivel",
+    "Solo aplicable en cetros y escudos"
+  ]
+}
