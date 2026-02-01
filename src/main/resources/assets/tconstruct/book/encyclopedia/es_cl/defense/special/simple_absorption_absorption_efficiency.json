@@ -1,0 +1,18 @@
+{
+  "modifier_id": "simple_absorption:absorption_efficiency",
+  "text": [
+    {
+      "text": "El regenerar absorción empieza antes por medio muslo menos de hambre cada nivel, y ocurrirá más rápido cuando al no estar con la barra de hambre llena."
+    },
+    {
+      "text": "Regenerar corazones de absorción también ocupa menos hambre.",
+      "paragraph": true
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Aplica los niveles incrementalmente",
+    "Requiere 1 slot de defensa cada nivel",
+    "Solo aplicable en cetros y escudos"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "enchantment.simple_absorption.absorption": "Absorción",
+  "simple_absorption.absorption_max": "Absorción máxima",
+  "simple_absorption.absorption_efficiency": "Eficiencia de Absorción",
+
+
+  "modifier.simple_absorption.absorption": "Absorción",
+  "modifier.simple_absorption.absorption.flavor": "¡Casi que revitalizante!",
+  "modifier.simple_absorption.absorption.description": "Otorga corazones de Absorción extras",
+
+  "modifier.simple_absorption.absorption_efficiency": "Eficiencia de Absorción",
+  "modifier.simple_absorption.absorption_efficiency.flavor": "¡Casi que regeneración!",
+  "modifier.simple_absorption.absorption_efficiency.description": "Hace que la Absorción sea menos hambrienta-de-hambre al regenerar"
+}
