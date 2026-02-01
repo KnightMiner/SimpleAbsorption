@@ -1,0 +1,17 @@
+{
+  "modifier_id": "simple_absorption:absorption",
+  "text": [
+    {
+      "text": "Te otorga medio corazón de absorción cada nivel."
+    },
+    {
+      "text": "La absorción se regenerará lentamente cuando tengás más de 9 muslos de hambre, y se regenerará mucho más rápido al tener la barra de hambre llena",
+      "paragraph": true
+    }
+  ],
+  "more_text_space": true,
+  "effects": [
+    "Requiere 1 slot de mejora cada nivel",
+    "Máximo de 5 niveles"
+  ]
+}
