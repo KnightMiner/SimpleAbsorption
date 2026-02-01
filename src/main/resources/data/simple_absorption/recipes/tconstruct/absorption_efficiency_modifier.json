@@ -9,9 +9,9 @@
   "allow_crystal": true,
   "amount_per_item": 1,
   "input": {
-    "item": "minecraft:glistering_melon_slice"
+    "item": "tconstruct:steel_shard"
   },
-  "needed_per_level": 8,
+  "needed_per_level": 10,
   "result": "simple_absorption:absorption_efficiency",
   "slots": {
     "defense": 1

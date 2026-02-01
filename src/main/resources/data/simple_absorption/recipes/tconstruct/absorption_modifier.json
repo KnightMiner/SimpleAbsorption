@@ -5,13 +5,11 @@
       "modid": "tconstruct"
     }
   ],
-  "type": "tconstruct:incremental_modifier",
+  "type": "tconstruct:modifier",
   "allow_crystal": true,
-  "amount_per_item": 1,
-  "input": {
+  "inputs": [{
     "item": "minecraft:golden_apple"
-  },
-  "needed_per_level": 1,
+  }],
   "result": "simple_absorption:absorption",
   "slots": {
     "upgrades": 1
