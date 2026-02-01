@@ -11,6 +11,7 @@
   ],
   "more_text_space": true,
   "effects": [
-    "Requires 1 upgrade slot per level"
+    "Requires 1 upgrade slot per level",
+    "Maximum of 5 levels"
   ]
 }
