@@ -1,0 +1,13 @@
+{
+  "modifier_id": "simple_absorption:absorption",
+  "text": [
+    {
+      "text": "就像海绵一样！不过吸的是血不是水。"
+    }
+  ],
+  "effects": [
+    "提供额外的吸收上限",
+    "伤害吸收会在饥饿值接近满格时恢复",
+    "每级需要1个升级槽"
+  ]
+}
