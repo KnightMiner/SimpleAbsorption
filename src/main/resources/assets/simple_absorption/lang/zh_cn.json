@@ -1,0 +1,14 @@
+{
+  "enchantment.simple_absorption.absorption": "伤害吸收",
+  "simple_absorption.absorption_max": "吸收上限",
+  "simple_absorption.absorption_efficiency": "吸收效率",
+
+
+  "modifier.simple_absorption.absorption": "伤害吸收",
+  "modifier.simple_absorption.absorption.flavor": "堪比“振作”！",
+  "modifier.simple_absorption.absorption.description": "提供额外的吸收上限",
+
+  "modifier.simple_absorption.absorption_efficiency": "吸收效率",
+  "modifier.simple_absorption.absorption_efficiency.flavor": "堪比“生命恢复”！",
+  "modifier.simple_absorption.absorption_efficiency.description": "使伤害吸收可以在饥饿值更低时恢复"
+}
