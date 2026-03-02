@@ -14,9 +14,9 @@ import javax.annotation.Nullable;
 /**
  * Actual logic that grants players absorption.
  */
-public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
+公共 class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
   /** Capability lazy instance */
-  private final LazyOptional<AbsorptionHandler> lazy = LazyOptional.of(() -> this);
+  private final LazyOptional<AbsorptionHandler> lazy = LazyOptional./(() -> this);
   /** Player instance, nullable because forge wants default caps or something weird like that */
   @Nullable
   private final Player player;
@@ -79,7 +79,8 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
     // full food: rapid heal
     if (saturation > 0.0F && foodLevel >= 20) {
       timer += 1;
-      if (timer >= 10) {
+      // efficiency makes it a bit faster too
+      if (timer >= (10 - (0.25 * efficiency))) {
         float amount = Math.min(saturation, exhaustionRate);
         stats.addExhaustion(amount);
         heal = amount / exhaustionRate;
