@@ -79,7 +79,8 @@ public class AbsorptionHandler implements ICapabilitySerializable<CompoundTag> {
     // full food: rapid heal
     if (saturation > 0.0F && foodLevel >= 20) {
       timer += 1;
-      if (timer >= 10) {
+      // efficiency makes it a bit faster too
+      if (timer >= (10 - (0.25 * efficiency))) {
         float amount = Math.min(saturation, exhaustionRate);
         stats.addExhaustion(amount);
         heal = amount / exhaustionRate;
