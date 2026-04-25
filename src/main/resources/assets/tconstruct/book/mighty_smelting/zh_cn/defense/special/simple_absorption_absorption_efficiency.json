@@ -1,0 +1,14 @@
+{
+  "modifier_id": "simple_absorption:absorption_efficiency",
+  "text": [
+    {
+      "text": "线粒体是细胞的“动力车间”。"
+    }
+  ],
+  "effects": [
+    "使伤害吸收恢复更快",
+    "可以逐级强化",
+    "每级需要1个防御槽",
+    "只可应用于手杖或盾牌"
+  ]
+}
